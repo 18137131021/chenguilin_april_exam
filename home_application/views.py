@@ -42,6 +42,7 @@ def add_module_html(request):
     return render_mako_context(request, 'home_application/script_supervise.html', {'all_pid': all_pid})
 
 from django.views.decorators.csrf import csrf_exempt
+from conf.default import SITE_URL
 # 新增模板
 @csrf_exempt
 def add_module(request):
@@ -73,29 +74,30 @@ def add_module(request):
             updata_module_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             is_delete=0
         )
-        # s = obj.name.encode('utf-8')
-        # # f = open(os.path.join('/upload', '/task_file.xls'), 'wb')
-        # # for line in obj.chunks():
-        # #     f.write(line)
-        # # f.close()
-        # # print f
-        # workbook = xlrd.open_workbook(filename)
+        s = obj.name.encode('utf-8')
+        # f = open(os.path.join('/upload', '/task_file.xls'), 'wb')
+        # for line in obj.chunks():
+        #     f.write(line)
+        # f.close()
+        # print f
+        workbook = xlrd.open_workbook(filename)
+        print workbook
         # # wb = xlwt.Workbook()
         # # ws = wb.add_sheet(s)
         # sheet1_name = workbook.sheet_names()[0]
         # print sheet1_name
-        # a = 0
-        # b = 0
+        a = 0
+        b = 0
         # for a in sheet1_name:
         #     data = sheet1_name.cell(a, b).value.encode('utf-8')
         #     print data
-    return redirect(reverse(home))
+    # return redirect(reverse(home))
 
 
 # 删除模板
 def del_model(request, o_id):
     module_data = models.TASK_MODULE.objects.filter(id=int(o_id)).first()
-    module_data.status = 1
+    module_data.is_delete = 1
     module_data.save()
     return redirect(reverse(home))
 
